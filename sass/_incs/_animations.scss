@@ -1,0 +1,94 @@
+@media screen and (min-width:640px) {
+
+    /* RebelX Logo Pulse */
+
+    .rebelxLogo-main {
+        -webkit-animation : slowPulse 2.5s linear infinite forwards;
+        animation         : slowPulse 2.5s linear infinite forwards;
+    }
+
+    .rebelxLogo-main {
+        &:hover {
+            -webkit-animation : fastFlicker .1s linear infinite forwards;
+            animation         : fastFlicker .1s linear infinite forwards;
+        }
+    }
+
+    /* COMMENTS FLICKER */
+
+    .userComments-comment {
+        -webkit-animation : randomFlicker 3.3s linear infinite forwards;
+        animation         : randomFlicker 3.3s linear infinite forwards;
+    }
+
+}
+
+/* PULSE */
+
+@-webkit-keyframes slowPulse {
+    0% { opacity : 0.5; }
+    50% { opacity : 1; }
+    100% { opacity : 0.5; }
+}
+
+@keyframes slowPulse {
+    0% { opacity : 0.5; }
+    50% { opacity : 1; }
+    100% { opacity : 0.5; }
+}
+
+/* FAST FLICKER */
+
+@-webkit-keyframes fastFlicker {
+    0% { opacity : 0.8; }
+    50% { opacity : 1; }
+    100% { opacity : 0.8; }
+}
+
+@keyframes fastFlicker {
+    0% { opacity : 0.8; }
+    50% { opacity : 1; }
+    100% { opacity : 0.8; }
+}
+
+/* RANDOM SLOW FLICKER */
+
+@-webkit-keyframes randomFlicker {
+    0% { opacity:1;}
+    4% { opacity:1; }
+    5% { opacity:0.5;}
+    7% { opacity:1;}
+    39% { opacity:1; }
+    40% { opacity:0.7; }
+    41% { opacity:1; }
+    49% { opacity:1; }
+    50% { opacity:0.4; }
+    51% { opacity:1; }
+    79% { opacity:1; }
+    80% { opacity:0.8; }
+    81% { opacity:1; }
+    84% { opacity:1; }
+    85% { opacity:0.7; }
+    87% { opacity:1; }
+    100% { opacity:1; }
+}
+
+@keyframes randomFlicker {
+    0% { opacity:1;}
+    4% { opacity:1; }
+    5% { opacity:0.5;}
+    7% { opacity:1;}
+    39% { opacity:1; }
+    40% { opacity:0.7; }
+    41% { opacity:1; }
+    49% { opacity:1; }
+    50% { opacity:0.4; }
+    51% { opacity:1; }
+    79% { opacity:1; }
+    80% { opacity:0.8; }
+    81% { opacity:1; }
+    84% { opacity:1; }
+    85% { opacity:0.7; }
+    87% { opacity:1; }
+    100% { opacity:1; }
+}

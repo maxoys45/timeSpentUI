@@ -1,0 +1,420 @@
+// ICOMOON
+@mixin icomoon($icon, $position : "after", $replace : false) {
+	// If we're replacing the text, set font-size to 0
+	@if $replace {
+		font-size : 0;
+	}
+	// Pseudo-element properties
+	&:#{$position} {
+		@extend .#{$icon};
+		font-family             : 'icomoon' !important;
+		speak                   : none;
+		font-style              : normal;
+		font-weight             : normal;
+		font-variant            : normal;
+		text-transform          : none;
+		line-height             : 1;
+		/* Better Font Rendering =========== */
+		-webkit-font-smoothing  : antialiased;
+		-moz-osx-font-smoothing : grayscale;
+		@if $replace {
+			font-size : 1rem;
+		}
+		@content;
+	}
+}
+
+/* BUTTONS */
+
+@mixin button($bg, $color : inherit, $radius : 1px, $bg_percent : 5%) {
+	@extend .btn-blank;
+	@include inline-block;
+	//@include transition(.2s);
+	position      : relative;
+	color         : $color;
+	background    : $bg;
+	border-radius : $radius;
+	padding       : .5rem;
+	font-size     : 1.6rem;
+	font-weight   : $font-semibold;
+	box-shadow    : 1px 1px darken($bg, $bg_percent), 2px 2px darken($bg, $bg_percent);
+	margin-right:2px;
+	margin-bottom:2px;
+
+	&:hover {
+		background : lighten($bg, $bg_percent);
+	}
+
+	&:active {
+		box-shadow : 1px 1px darken($bg, $bg_percent);
+		top        : 1px;
+		left       : 1px;
+	}
+}
+
+/* DOUBLE BORDER */
+
+@mixin doubleborder($thickness, $gap, $color, $bgcolor, $nomargin : false) {
+	$gap : $thickness + $gap;
+	$double : $thickness + $gap;
+	box-shadow : 0 0 0 $thickness $color,
+	0 0 0 $gap $bgcolor,
+	0 0 0 $double $color;
+	margin     : $double;
+
+	@if $nomargin {
+		margin : 0;
+	}
+}
+
+
+/* ANIMATIONS */
+@mixin keyframes($animation-name) {
+	@-webkit-keyframes #{$animation-name} {
+		@content;
+	}
+	@-moz-keyframes #{$animation-name} {
+		@content;
+	}
+	@-ms-keyframes #{$animation-name} {
+		@content;
+	}
+	@-o-keyframes #{$animation-name} {
+		@content;
+	}
+	@keyframes #{$animation-name} {
+		@content;
+	}
+}
+
+
+/* @keyframes duration | timing-function | delay |
+   iteration-count | direction | fill-mode | play-state | name
+
+EG: animation: 3s ease-in 1s 2 reverse both paused slidein; */
+
+@mixin animation($str) {
+	-webkit-animation : #{$str};
+	-moz-animation    : #{$str};
+	-ms-animation     : #{$str};
+	-o-animation      : #{$str};
+	animation         : #{$str};
+}
+
+/* WRAP */
+
+@mixin wrap($width : $scr--wrap) {
+	max-width : #{$width}px;
+	margin    : 0 auto;
+}
+
+/* ELLIP */
+@mixin ellipsis($width, $widthType : max-width) {
+	#{$widthType} : $width;
+	text-overflow : ellipsis;
+	overflow      : hidden;
+	white-space   : nowrap;
+}
+
+/* TRANSITIONS */
+@mixin transition($duration : .2s, $property : all, $easing : ease-in-out) {
+	-webkit-transition : $duration $property $easing;
+	transition         : $duration $property $easing;
+}
+
+/* BREAK POINTS */
+@mixin bp($point, $minmax : min-width) {
+	@media ($minmax: #{$point}px) { @content; }
+}
+
+/* LIST MARGINS */
+@mixin list-margin($margin, $direction) {
+	@if $direction == v {
+		margin-bottom : $margin;
+		&:last-of-type {
+			margin-bottom : 0;
+		}
+	} @else if $direction == h {
+		margin-right  : $margin;
+		&:last-of-type {
+			margin-right : 0;
+		}
+	}
+}
+
+/* FLEXBOX */
+
+/* ------------------------------------------------------
+ * FLEXBOX MIXIN
+ * ------------------------------------------------------
+ * @desc  Let's you create flexbox container and item css with 2 mixins
+
+ * @usage
+ *
+ *    @include flexbox-container(
+ *
+ *        $display : flex,        [flex / inline]
+ *        $direction : row,       [row / row-reverse / column / column-reverse]
+ *        $wrap : nowrap,         [nowrap / wrap / wrap-reverse]
+ *        $justify : start,       [start / end / center / between / around]
+ *        $alignContent : start,  [start / end / center / between / around / stretch]
+ *        $alignItems : center     [start / end / center / baseline / stretch]
+ *
+ *    );
+ *
+ *
+ *    @include flexbox-item(
+ *
+ *        $order : null,          [integer] -- custom order of items
+ *        $grow : 0,              [0 / 1]
+ *        $shrink : 1,            [0 / 1]
+ *        $basis : auto,          [auto / <length>]
+ *        $alignSelf : auto       [auto / start / end / center / baseline / stretch]
+ *
+ *    );
+ *
+ * @author maxoys45
+ * @version 0.1
+ * ------------------------------------------------------ */
+
+@mixin flexbox-container($display : flex, $direction : row, $wrap : nowrap, $justify : start, $alignContent : start, $alignItems : center) {
+
+	@if $display == flex {
+		display : -webkit-box;
+		display : -moz-box;
+		display : -ms-flexbox;
+		display : -webkit-flex;
+		display : flex;
+	} @else if $display == inline {
+		display : -webkit-box;
+		display : -moz-box;
+		display : -ms-inline-flexbox;
+		display : -webkit-inline-flex;
+		display : inline-flex;
+	}
+
+	@if $direction == row {
+		-webkit-box-direction  : normal;
+		-moz-box-direction     : normal;
+		-webkit-box-orient     : horizontal;
+		-moz-box-orient        : horizontal;
+		-webkit-flex-direction : row;
+		-ms-flex-direction     : row;
+		flex-direction         : row;
+	} @else if $direction == row-reverse {
+		-webkit-box-direction  : reverse;
+		-moz-box-direction     : reverse;
+		-webkit-box-orient     : horizontal;
+		-moz-box-orient        : horizontal;
+		-webkit-flex-direction : row-reverse;
+		-ms-flex-direction     : row-reverse;
+		flex-direction         : row-reverse;
+	} @else if $direction == column {
+		-webkit-box-direction  : normal;
+		-moz-box-direction     : normal;
+		-webkit-box-orient     : vertical;
+		-moz-box-orient        : vertical;
+		-webkit-flex-direction : column;
+		-ms-flex-direction     : column;
+		flex-direction         : column;
+	} @else if $direction == column-reverse {
+		-webkit-box-direction  : reverse;
+		-moz-box-direction     : reverse;
+		-webkit-box-orient     : vertical;
+		-moz-box-orient        : vertical;
+		-webkit-flex-direction : column-reverse;
+		-ms-flex-direction     : column-reverse;
+		flex-direction         : column-reverse;
+	}
+
+	-webkit-flex-wrap   : $wrap;
+	-ms-flex-wrap       : $wrap;
+	flex-wrap           : $wrap;
+
+	@if $justify == start {
+		-webkit-box-pack        : start;
+		-moz-box-pack           : start;
+		-webkit-justify-content : flex-start;
+		-ms-flex-pack           : start;
+		justify-content         : flex-start;
+	} @else if $justify == end {
+		-webkit-box-pack        : end;
+		-moz-box-pack           : end;
+		-webkit-justify-content : flex-end;
+		-ms-flex-pack           : end;
+		justify-content         : flex-end;
+	} @else if $justify == center {
+		-webkit-box-pack        : center;
+		-moz-box-pack           : center;
+		-webkit-justify-content : center;
+		-ms-flex-pack           : center;
+		justify-content         : center;
+	} @else if $justify == between {
+		-webkit-box-pack        : justify;
+		-moz-box-pack           : justify;
+		-webkit-justify-content : space-between;
+		-ms-flex-pack           : justify;
+		justify-content         : space-between;
+	} @else if $justify == around {
+		-webkit-box-pack        : justify;
+		-moz-box-pack           : justify;
+		-webkit-justify-content : space-around;
+		-ms-flex-pack           : distribute;
+		justify-content         : space-around;
+	}
+
+	@if $alignContent == start {
+		-webkit-align-content : flex-start;
+		-ms-flex-line-pack    : start;
+		align-content         : flex-start;
+	} @else if $alignContent == end {
+		-webkit-align-content : flex-end;
+		-ms-flex-line-pack    : end;
+		align-content         : flex-end;
+	} @else if $alignContent == center {
+		-webkit-align-content : center;
+		-ms-flex-line-pack    : center;
+		align-content         : center;
+	} @else if $alignContent == between {
+		-webkit-align-content : space-between;
+		-ms-flex-line-pack    : justify;
+		align-content         : space-between;
+	} @else if $alignContent == around {
+		-webkit-align-content : space-around;
+		-ms-flex-line-pack    : distribute;
+		align-content         : space-around;
+	} @else if $alignContent == stretch {
+		-webkit-align-content : stretch;
+		-ms-flex-line-pack    : stretch;
+		align-content         : stretch;
+	}
+
+	@if $alignItems == start or end {
+		-webkit-align-items : flex- + $alignItems;
+		align-items         : flex- + $alignItems;
+	}
+
+	-webkit-align-items : $alignItems;
+	align-items         : $alignItems;
+	-webkit-box-align   : $alignItems;
+	-moz-box-align      : $alignItems;
+	-ms-flex-align      : $alignItems;
+}
+
+@mixin flexbox-item($order : null, $grow : 0, $shrink : 1, $basis : auto, $alignSelf : auto) {
+
+	@if $order != null {
+		-webkit-box-ordinal-group : $order + 1;
+		-moz-box-ordinal-group    : $order + 1;
+		-webkit-order             : $order;
+		-ms-flex-order            : $order;
+		order                     : $order;
+	}
+	-webkit-box-flex    : $grow;
+	-moz-box-flex       : $grow;
+	-webkit-flex        : $grow $shrink $basis;
+	-ms-flex            : $grow $shrink $basis;
+	flex                : $grow $shrink $basis;
+	-webkit-align-self  : $alignSelf;
+	-ms-flex-item-align : $alignSelf;
+	align-self          : $alignSelf;
+
+	@if $alignSelf == start or end {
+		-webkit-align-self  : flex- + $alignSelf;
+		-ms-flex-item-align : $alignSelf;
+		align-self          : flex- + $alignSelf;
+	}
+
+}
+
+// INLINE-BLOCK
+@mixin inline-block($align : middle) {
+	display        : inline-block;
+	vertical-align : $align;
+}
+
+// TRANSITIONS
+@mixin transition($time : .2s, $property : all, $ease : ease-in-out) {
+	-webkit-transition : $time $property $ease;
+	transition         : $time $property $ease;
+}
+
+// BORDER RADIUS
+@mixin border-radius($rad : .2rem) {
+	border-radius : $rad;
+}
+
+/* ASPECT RATIO */
+
+@mixin aspect-ratio($width, $height) {
+	position : relative;
+	&:before {
+		display     : block;
+		content     : "";
+		width       : 100%;
+		padding-top : ($height / $width) * 100%;
+	}
+	> .keep-ratio {
+		position : absolute;
+		top      : 0;
+		left     : 0;
+		right    : 0;
+		bottom   : 0;
+	}
+}
+
+/* HARDWARE ACCEL */
+
+@mixin accel() {
+	-webkit-transform : translateZ(0);
+	-moz-transform    : translateZ(0);
+	-ms-transform     : translateZ(0);
+	-o-transform      : translateZ(0);
+	transform         : translateZ(0);
+}
+
+/* CENTRED CONTENT */
+
+@mixin centred($centredInner, $always:false) {
+
+	& {
+		text-align : center;
+
+		@if $always == false {
+
+			@include bp($scr-wrap) {
+
+				height     : 100%;
+
+				&:before {
+					@include inline-block;
+					content : '';
+					height  : 100%;
+				}
+
+				.#{$centredInner} {
+					@include inline-block;
+				}
+
+			}
+
+		}
+
+		@if $always == true {
+
+			height     : 100%;
+
+			&:before {
+				@include inline-block;
+				content : '';
+				height  : 100%;
+			}
+
+			.#{$centredInner} {
+				@include inline-block;
+			}
+
+		}
+	}
+
+}
